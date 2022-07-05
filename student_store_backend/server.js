@@ -3,9 +3,13 @@ const cors = require("cors")
 const morgan = require("morgan")
 const { PORT } = require("./config")
 const { NotFoundError } = require("./utils/errors")
-const authRoutes = require("./routes/auth")
-
 const app = express()
+//security middleware
+const security = require('./middleware/security')
+// routes
+const authRoutes = require("./routes/auth")
+const storeRoutes = require("./routes/store")
+const orderRoutes = require("./routes/order")
 
 // enable cross-origin resource sharing for all origins for all requests
 // NOTE: in production, we'll want to restrict this to only the origin
@@ -15,8 +19,14 @@ app.use(cors())
 app.use(express.json())
 // log requests info
 app.use(morgan("tiny"))
-
+// for every request, check if user exists
+// in authorization header
+// if it does attach the decoded user to res.locals
+app.use(security.extractUserFromJwt)
+// routes
 app.use("/auth", authRoutes)
+app.use("/store", storeRoutes);
+app.use("/order", orderRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use((req, res, next) => {
