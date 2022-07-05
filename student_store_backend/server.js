@@ -9,7 +9,7 @@ const security = require('./middleware/security')
 // routes
 const authRoutes = require("./routes/auth")
 const storeRoutes = require("./routes/store")
-const orderRoutes = require("./routes/order")
+const orderRoutes = require("./routes/orders")
 
 // enable cross-origin resource sharing for all origins for all requests
 // NOTE: in production, we'll want to restrict this to only the origin
